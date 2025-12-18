@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-gray-50 to-white text-gray-900 antialiased;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-2xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-bee-yellow/30 hover:-translate-y-1;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-bee-yellow to-yellow-400 text-bee-black px-6 py-3 rounded-xl font-semibold hover:from-yellow-400 hover:to-bee-yellow transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-100 text-gray-700 px-6 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-colors duration-200;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-bee-yellow via-yellow-500 to-bee-yellow bg-clip-text text-transparent;
+  }
+}
+
