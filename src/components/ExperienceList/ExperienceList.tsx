@@ -1,30 +1,73 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import type { Experience } from '@/types/experience.types';
 import { ExperienceCard } from '../ExperienceCard/ExperienceCard';
 import { ExperienceModal } from '../ExperienceModal/ExperienceModal';
 import { container } from '@/di/container';
+
+const PAGE_SIZE = 6; // Número de experiências por página
 
 export const ExperienceList = () => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [selectedExperience, setSelectedExperience] = useState<Experience | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const observerTarget = useRef<HTMLDivElement>(null);
+
+  const loadExperiences = useCallback(async (page: number, append: boolean = false) => {
+    try {
+      if (append) {
+        setLoadingMore(true);
+      } else {
+        setLoading(true);
+      }
+
+      const experienceService = container.getExperienceService();
+      const response = await experienceService.getExperiencesPaginated(page, PAGE_SIZE);
+      
+      if (append) {
+        setExperiences(prev => [...prev, ...response.data]);
+      } else {
+        setExperiences(response.data);
+      }
+      
+      setHasMore(response.hasMore);
+      setCurrentPage(page);
+    } catch (error) {
+      console.error('Erro ao carregar experiências:', error);
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const loadExperiences = async () => {
-      try {
-        const experienceService = container.getExperienceService();
-        const data = await experienceService.getAllExperiences();
-        setExperiences(data);
-      } catch (error) {
-        console.error('Erro ao carregar experiências:', error);
-      } finally {
-        setLoading(false);
+    loadExperiences(1, false);
+  }, [loadExperiences]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !loadingMore && !loading) {
+          loadExperiences(currentPage + 1, true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const currentTarget = observerTarget.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+    }
+
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
       }
     };
-
-    loadExperiences();
-  }, []);
+  }, [hasMore, loadingMore, loading, currentPage, loadExperiences]);
 
   const handleCardClick = (experience: Experience) => {
     setSelectedExperience(experience);
@@ -66,6 +109,20 @@ export const ExperienceList = () => {
           />
         ))}
       </div>
+      
+      {/* Elemento observado para scroll infinito */}
+      <div ref={observerTarget} className="h-20 flex items-center justify-center">
+        {loadingMore && (
+          <div className="flex flex-col items-center gap-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-bee-yellow border-t-transparent"></div>
+            <p className="text-gray-600 text-sm">Carregando mais experiências...</p>
+          </div>
+        )}
+        {!hasMore && experiences.length > 0 && (
+          <p className="text-gray-500 text-sm">Todas as experiências foram carregadas</p>
+        )}
+      </div>
+
       <ExperienceModal
         experience={selectedExperience}
         isOpen={isModalOpen}
