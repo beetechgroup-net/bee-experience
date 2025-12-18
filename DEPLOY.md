@@ -26,5 +26,5 @@ Ou configure o GitHub Pages para servir a pasta `dist` do branch `gh-pages`.
 
 ## Configuração do Base Path
 
-O projeto está configurado para o repositório `bee-experiences`. Se o nome do repositório for diferente, atualize o `base` no arquivo `vite.config.ts`.
+O projeto está configurado para o repositório `bee-experience`. Se o nome do repositório for diferente, atualize o `base` no arquivo `vite.config.ts`.
 
