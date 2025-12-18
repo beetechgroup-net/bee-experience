@@ -24,7 +24,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  base: '/bee-experiences/',
+  base: '/bee-experience/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
