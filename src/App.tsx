@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Header } from '@/components/Header/Header';
-import { ExperienceList } from '@/components/ExperienceList/ExperienceList';
-import { ProjectList } from '@/components/ProjectList/ProjectList';
+import { UnifiedList } from '@/components/UnifiedList/UnifiedList';
 import { Home } from '@/components/Home/Home';
 import { TechFilter } from '@/components/TechFilter/TechFilter';
 import { TechIcon } from '@/components/TechIcon/TechIcon';
@@ -9,7 +8,6 @@ import { XMarkIcon } from '@heroicons/react/20/solid';
 
 function App() {
   const [currentView, setCurrentView] = useState<'home' | 'results'>('home');
-  const [activeFilter, setActiveFilter] = useState<'all' | 'experiences' | 'projects'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTechs, setSelectedTechs] = useState<string[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -17,11 +15,6 @@ function App() {
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     setCurrentView('results');
-    // If searching by text, we might want to keep existing tech filters or clear them.
-    // User request: "se eu selecionei na hora deve manter selecionado". 
-    // This probably refers to selecting a tech icon.
-    // If I type a text, I probably want to search within that context or globally.
-    // Let's keep selectedTechs as is when text searching.
   };
 
   const handleTechSelectFromHome = (tech: string) => {
@@ -89,28 +82,9 @@ function App() {
                     onChange={setSelectedTechs}
                   />
                 </div>
-
-                {/* Tabs */}
-                <div className="flex p-1 space-x-1 bg-gray-100/80 rounded-xl shrink-0">
-                  {(['all', 'experiences', 'projects'] as const).map((filter) => (
-                    <button
-                      key={filter}
-                      onClick={() => setActiveFilter(filter)}
-                      className={`
-                        px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 whitespace-nowrap
-                        ${activeFilter === filter
-                          ? 'bg-white text-gray-900 shadow-sm'
-                          : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200/50'
-                        }
-                        `}
-                    >
-                      {filter === 'all' ? 'Todos' : filter === 'experiences' ? 'Experiências' : 'Projetos'}
-                    </button>
-                  ))}
-                </div>
               </div>
 
-              {/* Selected Tags Row (New) */}
+              {/* Selected Tags Row */}
               {(selectedTechs.length > 0 || searchQuery) && (
                 <div className="flex flex-wrap items-center gap-3 px-1">
                   {selectedTechs.map(tech => (
@@ -138,29 +112,7 @@ function App() {
             </div>
 
             <div className="space-y-12">
-              {(activeFilter === 'all' || activeFilter === 'experiences') && (
-                <section className={activeFilter === 'all' ? 'mb-16' : ''}>
-                  {activeFilter === 'all' && (
-                    <div className="flex items-center gap-4 mb-8">
-                      <h2 className="text-2xl font-bold text-gray-900">Experiências</h2>
-                      <div className="h-px flex-1 bg-gray-200"></div>
-                    </div>
-                  )}
-                  <ExperienceList searchQuery={searchQuery} selectedTechs={selectedTechs} />
-                </section>
-              )}
-
-              {(activeFilter === 'all' || activeFilter === 'projects') && (
-                <section>
-                  {activeFilter === 'all' && (
-                    <div className="flex items-center gap-4 mb-8">
-                      <h2 className="text-2xl font-bold text-gray-900">Projetos</h2>
-                      <div className="h-px flex-1 bg-gray-200"></div>
-                    </div>
-                  )}
-                  <ProjectList searchQuery={searchQuery} selectedTechs={selectedTechs} />
-                </section>
-              )}
+              <UnifiedList searchQuery={searchQuery} selectedTechs={selectedTechs} />
             </div>
           </main>
         )}
