@@ -98,9 +98,9 @@ export const ExperienceModal = ({ experience, isOpen, onClose }: ExperienceModal
                     Destaques
                   </h4>
                   <div className="space-y-4">
-                    {experience.highlights.map((highlight, index) => (
-                      <div 
-                        key={index} 
+                    {experience.highlights?.map((highlight, index) => (
+                      <div
+                        key={index}
                         className="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border-l-4 border-bee-yellow shadow-sm hover:shadow-md transition-shadow"
                       >
                         <h5 className="font-bold text-gray-900 mb-2 text-lg">{highlight.title}</h5>
