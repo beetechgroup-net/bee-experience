@@ -12,11 +12,12 @@
     "deploy": "npm run build && echo 'Build concluído! Agora você pode fazer commit e push da pasta dist para o branch gh-pages'"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.18",
+    "@heroicons/react": "^2.2.0",
+    "clsx": "^2.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "@heroicons/react": "^2.2.0",
-    "@headlessui/react": "^1.7.18",
-    "clsx": "^2.1.1"
+    "react-icons": "^5.5.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
@@ -34,4 +35,3 @@
     "vite": "^5.3.1"
   }
 }
-

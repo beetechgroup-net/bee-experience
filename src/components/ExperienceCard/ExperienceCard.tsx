@@ -1,5 +1,6 @@
 import type { Experience } from '@/types/experience.types';
 import { CalendarIcon, BuildingOfficeIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
+import { TechIcon } from '../TechIcon/TechIcon';
 
 interface ExperienceCardProps {
   experience: Experience;
@@ -8,7 +9,7 @@ interface ExperienceCardProps {
 
 export const ExperienceCard = ({ experience, onClick }: ExperienceCardProps) => {
   return (
-    <div 
+    <div
       className="card cursor-pointer group"
       onClick={onClick}
     >
@@ -35,27 +36,26 @@ export const ExperienceCard = ({ experience, onClick }: ExperienceCardProps) => 
           Experiência
         </span>
       </div>
-      
+
       <p className="text-gray-600 mb-5 line-clamp-3 leading-relaxed">{experience.description}</p>
-      
+
       <div className="flex items-center justify-between">
         <div className="flex flex-wrap gap-2">
-          {experience.technologies.slice(0, 4).map((tech, index) => (
-            <span
+          {experience.technologies.slice(0, 8).map((tech, index) => (
+            <TechIcon
               key={index}
-              className="px-3 py-1.5 bg-gradient-to-r from-gray-100 to-gray-50 rounded-full text-xs font-medium text-gray-700 border border-gray-200 hover:border-bee-yellow/50 transition-colors"
-            >
-              {tech.name}
-            </span>
+              name={tech.name}
+              className="w-6 h-6 text-gray-500 hover:text-bee-yellow transition-colors"
+            />
           ))}
-          {experience.technologies.length > 4 && (
-            <span className="px-3 py-1.5 bg-gradient-to-r from-bee-yellow/10 to-yellow-50 rounded-full text-xs font-semibold text-bee-yellow border border-bee-yellow/30">
-              +{experience.technologies.length - 4}
+          {experience.technologies.length > 8 && (
+            <span className="flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold text-gray-500 bg-gray-100 dark:bg-gray-800">
+              +{experience.technologies.length - 8}
             </span>
           )}
         </div>
       </div>
-      
+
       <div className="mt-4 pt-4 border-t border-gray-100">
         <span className="text-xs font-semibold text-bee-yellow group-hover:underline">
           Ver detalhes →
