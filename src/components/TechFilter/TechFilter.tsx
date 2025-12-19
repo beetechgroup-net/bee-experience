@@ -24,19 +24,14 @@ export const TechFilter = ({ selectedTechs, onChange }: TechFilterProps) => {
                 tech.toLowerCase().includes(query.toLowerCase())
             );
 
-    const removeTech = (e: React.MouseEvent, techToRemove: string) => {
-        e.stopPropagation();
-        onChange(selectedTechs.filter((tech) => tech !== techToRemove));
-    };
-
     return (
-        <div className="w-72">
+        <div className="w-full md:w-64 flex-shrink-0">
             <Listbox value={selectedTechs} onChange={onChange} multiple>
                 <div className="relative mt-1">
-                    <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-                        <span className="block truncate">
+                    <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2.5 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm border border-gray-200">
+                        <span className="block truncate text-gray-700">
                             {selectedTechs.length === 0
-                                ? 'Filtrar por Tecnologias'
+                                ? 'Filtrar por tecnologias'
                                 : `${selectedTechs.length} selecionada(s)`}
                         </span>
                         <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -60,6 +55,7 @@ export const TechFilter = ({ selectedTechs, onChange }: TechFilterProps) => {
                                     placeholder="Buscar tecnologia..."
                                     value={query}
                                     onChange={(e) => setQuery(e.target.value)}
+                                    // Prevent click propagation to avoid closing the dropdown
                                     onClick={(e) => e.stopPropagation()}
                                 />
                             </div>
@@ -101,33 +97,6 @@ export const TechFilter = ({ selectedTechs, onChange }: TechFilterProps) => {
                     </Transition>
                 </div>
             </Listbox>
-
-            {/* Selected Tags Display */}
-            {selectedTechs.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-3">
-                    {selectedTechs.map((tech) => (
-                        <span
-                            key={tech}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-bee-yellow/10 text-bee-yellow"
-                        >
-                            <TechIcon name={tech} className="w-3 h-3" showTooltip={false} />
-                            {tech}
-                            <button
-                                onClick={(e) => removeTech(e, tech)}
-                                className="ml-1 hover:text-red-500 focus:outline-none"
-                            >
-                                <XMarkIcon className="w-3 h-3" />
-                            </button>
-                        </span>
-                    ))}
-                    <button
-                        onClick={() => onChange([])}
-                        className="text-xs text-gray-400 hover:text-gray-600 underline ml-1"
-                    >
-                        Limpar
-                    </button>
-                </div>
-            )}
         </div>
     );
 };

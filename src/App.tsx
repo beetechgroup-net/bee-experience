@@ -4,6 +4,8 @@ import { ExperienceList } from '@/components/ExperienceList/ExperienceList';
 import { ProjectList } from '@/components/ProjectList/ProjectList';
 import { Home } from '@/components/Home/Home';
 import { TechFilter } from '@/components/TechFilter/TechFilter';
+import { TechIcon } from '@/components/TechIcon/TechIcon';
+import { XMarkIcon } from '@heroicons/react/20/solid';
 
 function App() {
   const [currentView, setCurrentView] = useState<'home' | 'results'>('home');
@@ -61,56 +63,76 @@ function App() {
           <Home onSearch={handleSearch} onTechSelect={handleTechSelectFromHome} />
         ) : (
           <main ref={scrollRef} className="container mx-auto px-4 py-8 md:py-12 min-h-[calc(100vh-80px)]">
-            <div className="mb-10 space-y-6">
-              <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-                <div className="relative w-full md:w-96 group">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg className="h-5 w-5 text-gray-400 group-focus-within:text-bee-yellow transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                  </div>
-                  <input
-                    type="text"
-                    className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-bee-yellow/50 focus:border-bee-yellow/50 transition-all duration-200 sm:text-sm"
-                    placeholder="Buscar em resultados..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
+            <div className="mb-10 space-y-4">
+              <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
 
-                <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+                <div className="flex flex-col md:flex-row gap-4 w-full items-center">
+                  {/* Search Input */}
+                  <div className="relative flex-grow group w-full md:w-auto">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <svg className="h-5 w-5 text-gray-400 group-focus-within:text-bee-yellow transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </div>
+                    <input
+                      type="text"
+                      className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-bee-yellow/50 focus:border-bee-yellow/50 transition-all duration-200 sm:text-sm"
+                      placeholder="Buscar em resultados..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+
+                  {/* Tech Filter Dropdown */}
                   <TechFilter
                     selectedTechs={selectedTechs}
                     onChange={setSelectedTechs}
                   />
+                </div>
 
-                  <div className="flex p-1 space-x-1 bg-gray-100/80 rounded-xl">
-                    {(['all', 'experiences', 'projects'] as const).map((filter) => (
-                      <button
-                        key={filter}
-                        onClick={() => setActiveFilter(filter)}
-                        className={`
-                            px-6 py-2.5 text-sm font-medium rounded-lg transition-all duration-200
-                            ${activeFilter === filter
-                            ? 'bg-white text-gray-900 shadow-sm'
-                            : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200/50'
-                          }
-                          `}
-                      >
-                        {filter === 'all' ? 'Todos' : filter === 'experiences' ? 'Experiências' : 'Projetos'}
-                      </button>
-                    ))}
-                  </div>
+                {/* Tabs */}
+                <div className="flex p-1 space-x-1 bg-gray-100/80 rounded-xl shrink-0">
+                  {(['all', 'experiences', 'projects'] as const).map((filter) => (
+                    <button
+                      key={filter}
+                      onClick={() => setActiveFilter(filter)}
+                      className={`
+                        px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 whitespace-nowrap
+                        ${activeFilter === filter
+                          ? 'bg-white text-gray-900 shadow-sm'
+                          : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200/50'
+                        }
+                        `}
+                    >
+                      {filter === 'all' ? 'Todos' : filter === 'experiences' ? 'Experiências' : 'Projetos'}
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              {/* Active Search/Filter Indicators */}
-              {(searchQuery || selectedTechs.length > 0) && (
-                <div className="flex items-center gap-2 text-sm text-gray-500 bg-white/50 p-3 rounded-lg border border-gray-100 inline-block">
-                  <span>Resultados para:</span>
-                  {searchQuery && <span className="font-semibold text-gray-900">"{searchQuery}"</span>}
-                  {searchQuery && selectedTechs.length > 0 && <span>+</span>}
-                  {selectedTechs.length > 0 && <span className="font-semibold text-gray-900">{selectedTechs.join(', ')}</span>}
+              {/* Selected Tags Row (New) */}
+              {(selectedTechs.length > 0 || searchQuery) && (
+                <div className="flex flex-wrap items-center gap-3 px-1">
+                  {selectedTechs.map(tech => (
+                    <span key={tech} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-bee-yellow/10 text-bee-black border border-bee-yellow/20 transition-all hover:bg-bee-yellow/20">
+                      <TechIcon name={tech} className="w-3.5 h-3.5" showTooltip={false} />
+                      {tech}
+                      <button
+                        onClick={() => setSelectedTechs(prev => prev.filter(t => t !== tech))}
+                        className="ml-1 p-0.5 hover:bg-black/10 rounded-full transition-colors"
+                      >
+                        <XMarkIcon className="w-3 h-3" />
+                      </button>
+                    </span>
+                  ))}
+                  {(selectedTechs.length > 0 || searchQuery) && (
+                    <button
+                      onClick={() => { setSelectedTechs([]); setSearchQuery(''); }}
+                      className="text-xs text-gray-500 hover:text-bee-black underline decoration-dotted transition-colors"
+                    >
+                      Limpar filtros
+                    </button>
+                  )}
                 </div>
               )}
             </div>
