@@ -4,13 +4,29 @@ import { ExperienceList } from './components/ExperienceList/ExperienceList';
 import { ProjectList } from './components/ProjectList/ProjectList';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<'experiences' | 'projects'>('experiences');
+  const [currentPage, setCurrentPage] = useState<'all' | 'experiences' | 'projects'>('all');
 
   return (
     <div className="min-h-screen">
       <Header currentPage={currentPage} onPageChange={setCurrentPage} />
       <main className="container mx-auto px-4 py-16">
-        {currentPage === 'experiences' ? (
+        {currentPage === 'all' ? (
+          <>
+            <div className="mb-12 text-center">
+              <h2 className="text-5xl font-bold text-gray-900 mb-4">
+                Minhas <span className="gradient-text">Experiências e Projetos</span>
+              </h2>
+              <p className="text-gray-600 text-xl max-w-2xl mx-auto">
+                Explore minhas experiências profissionais e projetos desenvolvidos, 
+                descobrindo as tecnologias e soluções que criei ao longo da minha carreira
+              </p>
+            </div>
+            <div className="space-y-16">
+              <ExperienceList />
+              <ProjectList />
+            </div>
+          </>
+        ) : currentPage === 'experiences' ? (
           <>
             <div className="mb-12 text-center">
               <h2 className="text-5xl font-bold text-gray-900 mb-4">
@@ -50,4 +66,3 @@ function App() {
 }
 
 export default App;
-

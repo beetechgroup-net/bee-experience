@@ -51,6 +51,9 @@ export const ProjectCard = ({ project, onClick }: ProjectCardProps) => {
             </span>
           </div>
         </div>
+        <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 border border-blue-200 ml-2 shrink-0">
+          Projeto
+        </span>
       </div>
       
       <p className="text-gray-600 mb-5 line-clamp-3 leading-relaxed">{project.description}</p>
@@ -112,4 +115,3 @@ export const ProjectCard = ({ project, onClick }: ProjectCardProps) => {
     </div>
   );
 };
-

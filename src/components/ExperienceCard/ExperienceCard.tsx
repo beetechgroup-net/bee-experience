@@ -31,6 +31,9 @@ export const ExperienceCard = ({ experience, onClick }: ExperienceCardProps) => 
             </div>
           </div>
         </div>
+        <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700 border border-purple-200 ml-2 shrink-0">
+          Experiência
+        </span>
       </div>
       
       <p className="text-gray-600 mb-5 line-clamp-3 leading-relaxed">{experience.description}</p>
@@ -61,4 +64,3 @@ export const ExperienceCard = ({ experience, onClick }: ExperienceCardProps) => 
     </div>
   );
 };
-

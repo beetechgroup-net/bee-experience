@@ -61,12 +61,17 @@ export const ExperienceModal = ({ experience, isOpen, onClose }: ExperienceModal
               <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-3xl bg-white p-8 text-left align-middle shadow-2xl transition-all border border-gray-100">
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex-1">
-                    <Dialog.Title
-                      as="h3"
-                      className="text-3xl font-bold gradient-text mb-3"
-                    >
-                      {experience.title}
-                    </Dialog.Title>
+                    <div className="flex items-center gap-3 mb-3">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-3xl font-bold gradient-text"
+                      >
+                        {experience.title}
+                      </Dialog.Title>
+                      <span className="px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-700 border border-purple-200">
+                        Experiência
+                      </span>
+                    </div>
                     <div className="flex items-center gap-4 text-gray-600 mb-4">
                       <span className="font-semibold text-gray-900">{experience.company}</span>
                       <span className="text-gray-400">•</span>
@@ -135,4 +140,3 @@ export const ExperienceModal = ({ experience, isOpen, onClose }: ExperienceModal
     </Transition>
   );
 };
-

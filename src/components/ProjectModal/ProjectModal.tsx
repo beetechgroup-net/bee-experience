@@ -79,12 +79,17 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
               <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-3xl bg-white p-8 text-left align-middle shadow-2xl transition-all border border-gray-100">
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex-1">
-                    <Dialog.Title
-                      as="h3"
-                      className="text-3xl font-bold gradient-text mb-3"
-                    >
-                      {project.title}
-                    </Dialog.Title>
+                    <div className="flex items-center gap-3 mb-3">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-3xl font-bold gradient-text"
+                      >
+                        {project.title}
+                      </Dialog.Title>
+                      <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-700 border border-blue-200">
+                        Projeto
+                      </span>
+                    </div>
                     <div className="flex items-center gap-4 text-gray-600 mb-4 flex-wrap">
                       <span className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">
                         {project.category}
@@ -181,4 +186,3 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
     </Transition>
   );
 };
-
