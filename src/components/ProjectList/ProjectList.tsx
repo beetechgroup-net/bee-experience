@@ -6,7 +6,11 @@ import { container } from '@/di/container';
 
 const PAGE_SIZE = 6; // Número de projetos por página
 
-export const ProjectList = () => {
+interface ProjectListProps {
+  searchQuery?: string;
+}
+
+export const ProjectList = ({ searchQuery }: ProjectListProps) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,14 +29,14 @@ export const ProjectList = () => {
       }
 
       const projectService = container.getProjectService();
-      const response = await projectService.getProjectsPaginated(page, PAGE_SIZE);
-      
+      const response = await projectService.getProjectsPaginated(page, PAGE_SIZE, searchQuery);
+
       if (append) {
         setProjects(prev => [...prev, ...response.data]);
       } else {
         setProjects(response.data);
       }
-      
+
       setHasMore(response.hasMore);
       setCurrentPage(page);
     } catch (error) {
@@ -41,11 +45,11 @@ export const ProjectList = () => {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, []);
+  }, [searchQuery]);
 
   useEffect(() => {
     loadProjects(1, false);
-  }, [loadProjects]);
+  }, [loadProjects, searchQuery]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -109,7 +113,7 @@ export const ProjectList = () => {
           />
         ))}
       </div>
-      
+
       {/* Elemento observado para scroll infinito */}
       <div ref={observerTarget} className="h-20 flex items-center justify-center">
         {loadingMore && (

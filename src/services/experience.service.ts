@@ -11,7 +11,7 @@ export interface PaginatedResponse {
 export interface IExperienceService {
   getAllExperiences(): Promise<Experience[]>;
   getExperienceById(id: string): Promise<Experience | null>;
-  getExperiencesPaginated(page: number, pageSize: number): Promise<PaginatedResponse>;
+  getExperiencesPaginated(page: number, pageSize: number, searchQuery?: string): Promise<PaginatedResponse>;
 }
 
 export class ExperienceService implements IExperienceService {
@@ -37,13 +37,25 @@ export class ExperienceService implements IExperienceService {
     return Promise.resolve(experience || null);
   }
 
-  async getExperiencesPaginated(page: number, pageSize: number): Promise<PaginatedResponse> {
+  async getExperiencesPaginated(page: number, pageSize: number, searchQuery?: string): Promise<PaginatedResponse> {
     await this.simulateDelay();
-    
+
+    let filteredData = this.experiences;
+
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filteredData = this.experiences.filter(exp =>
+        (exp.title && exp.title.toLowerCase().includes(query)) ||
+        (exp.description && exp.description.toLowerCase().includes(query)) ||
+        (exp.company && exp.company.toLowerCase().includes(query)) ||
+        (exp.technologies && exp.technologies.some(tech => tech.name.toLowerCase().includes(query)))
+      );
+    }
+
     const startIndex = (page - 1) * pageSize;
     const endIndex = startIndex + pageSize;
-    const paginatedData = this.experiences.slice(startIndex, endIndex);
-    const total = this.experiences.length;
+    const paginatedData = filteredData.slice(startIndex, endIndex);
+    const total = filteredData.length;
     const hasMore = endIndex < total;
 
     return {

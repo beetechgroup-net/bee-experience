@@ -11,7 +11,7 @@ export interface PaginatedResponse {
 export interface IProjectService {
   getAllProjects(): Promise<Project[]>;
   getProjectById(id: string): Promise<Project | null>;
-  getProjectsPaginated(page: number, pageSize: number): Promise<PaginatedResponse>;
+  getProjectsPaginated(page: number, pageSize: number, searchQuery?: string): Promise<PaginatedResponse>;
 }
 
 export class ProjectService implements IProjectService {
@@ -37,13 +37,24 @@ export class ProjectService implements IProjectService {
     return Promise.resolve(project || null);
   }
 
-  async getProjectsPaginated(page: number, pageSize: number): Promise<PaginatedResponse> {
+  async getProjectsPaginated(page: number, pageSize: number, searchQuery?: string): Promise<PaginatedResponse> {
     await this.simulateDelay();
-    
+
+    let filteredData = this.projects;
+
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filteredData = this.projects.filter(proj =>
+        (proj.title && proj.title.toLowerCase().includes(query)) ||
+        (proj.description && proj.description.toLowerCase().includes(query)) ||
+        (proj.technologies && proj.technologies.some(tech => tech.name.toLowerCase().includes(query)))
+      );
+    }
+
     const startIndex = (page - 1) * pageSize;
     const endIndex = startIndex + pageSize;
-    const paginatedData = this.projects.slice(startIndex, endIndex);
-    const total = this.projects.length;
+    const paginatedData = filteredData.slice(startIndex, endIndex);
+    const total = filteredData.length;
     const hasMore = endIndex < total;
 
     return {

@@ -6,7 +6,11 @@ import { container } from '@/di/container';
 
 const PAGE_SIZE = 6; // Número de experiências por página
 
-export const ExperienceList = () => {
+interface ExperienceListProps {
+  searchQuery?: string;
+}
+
+export const ExperienceList = ({ searchQuery }: ExperienceListProps) => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [selectedExperience, setSelectedExperience] = useState<Experience | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,14 +29,14 @@ export const ExperienceList = () => {
       }
 
       const experienceService = container.getExperienceService();
-      const response = await experienceService.getExperiencesPaginated(page, PAGE_SIZE);
-      
+      const response = await experienceService.getExperiencesPaginated(page, PAGE_SIZE, searchQuery);
+
       if (append) {
         setExperiences(prev => [...prev, ...response.data]);
       } else {
         setExperiences(response.data);
       }
-      
+
       setHasMore(response.hasMore);
       setCurrentPage(page);
     } catch (error) {
@@ -41,11 +45,11 @@ export const ExperienceList = () => {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, []);
+  }, [searchQuery]);
 
   useEffect(() => {
     loadExperiences(1, false);
-  }, [loadExperiences]);
+  }, [loadExperiences, searchQuery]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -109,7 +113,7 @@ export const ExperienceList = () => {
           />
         ))}
       </div>
-      
+
       {/* Elemento observado para scroll infinito */}
       <div ref={observerTarget} className="h-20 flex items-center justify-center">
         {loadingMore && (
