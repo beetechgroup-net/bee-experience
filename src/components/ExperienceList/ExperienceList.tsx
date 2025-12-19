@@ -8,9 +8,11 @@ const PAGE_SIZE = 6; // Número de experiências por página
 
 interface ExperienceListProps {
   searchQuery?: string;
+  selectedTechs?: string[];
 }
 
-export const ExperienceList = ({ searchQuery }: ExperienceListProps) => {
+
+export const ExperienceList = ({ searchQuery, selectedTechs }: ExperienceListProps) => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [selectedExperience, setSelectedExperience] = useState<Experience | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,7 +31,7 @@ export const ExperienceList = ({ searchQuery }: ExperienceListProps) => {
       }
 
       const experienceService = container.getExperienceService();
-      const response = await experienceService.getExperiencesPaginated(page, PAGE_SIZE, searchQuery);
+      const response = await experienceService.getExperiencesPaginated(page, PAGE_SIZE, searchQuery, selectedTechs);
 
       if (append) {
         setExperiences(prev => [...prev, ...response.data]);
@@ -45,11 +47,11 @@ export const ExperienceList = ({ searchQuery }: ExperienceListProps) => {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [searchQuery]);
+  }, [searchQuery, selectedTechs]);
 
   useEffect(() => {
     loadExperiences(1, false);
-  }, [loadExperiences, searchQuery]);
+  }, [loadExperiences, searchQuery, selectedTechs]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

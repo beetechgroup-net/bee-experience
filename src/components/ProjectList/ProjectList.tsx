@@ -8,9 +8,11 @@ const PAGE_SIZE = 6; // Número de projetos por página
 
 interface ProjectListProps {
   searchQuery?: string;
+  selectedTechs?: string[];
 }
 
-export const ProjectList = ({ searchQuery }: ProjectListProps) => {
+
+export const ProjectList = ({ searchQuery, selectedTechs }: ProjectListProps) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,7 +31,7 @@ export const ProjectList = ({ searchQuery }: ProjectListProps) => {
       }
 
       const projectService = container.getProjectService();
-      const response = await projectService.getProjectsPaginated(page, PAGE_SIZE, searchQuery);
+      const response = await projectService.getProjectsPaginated(page, PAGE_SIZE, searchQuery, selectedTechs);
 
       if (append) {
         setProjects(prev => [...prev, ...response.data]);
@@ -45,11 +47,11 @@ export const ProjectList = ({ searchQuery }: ProjectListProps) => {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [searchQuery]);
+  }, [searchQuery, selectedTechs]);
 
   useEffect(() => {
     loadProjects(1, false);
-  }, [loadProjects, searchQuery]);
+  }, [loadProjects, searchQuery, selectedTechs]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

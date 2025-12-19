@@ -11,7 +11,7 @@ export interface PaginatedResponse {
 export interface IExperienceService {
   getAllExperiences(): Promise<Experience[]>;
   getExperienceById(id: string): Promise<Experience | null>;
-  getExperiencesPaginated(page: number, pageSize: number, searchQuery?: string): Promise<PaginatedResponse>;
+  getExperiencesPaginated(page: number, pageSize: number, searchQuery?: string, selectedTechnologies?: string[]): Promise<PaginatedResponse>;
 }
 
 export class ExperienceService implements IExperienceService {
@@ -37,18 +37,24 @@ export class ExperienceService implements IExperienceService {
     return Promise.resolve(experience || null);
   }
 
-  async getExperiencesPaginated(page: number, pageSize: number, searchQuery?: string): Promise<PaginatedResponse> {
+  async getExperiencesPaginated(page: number, pageSize: number, searchQuery?: string, selectedTechnologies: string[] = []): Promise<PaginatedResponse> {
     await this.simulateDelay();
 
     let filteredData = this.experiences;
 
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      filteredData = this.experiences.filter(exp =>
+      filteredData = filteredData.filter(exp =>
         (exp.title && exp.title.toLowerCase().includes(query)) ||
         (exp.description && exp.description.toLowerCase().includes(query)) ||
         (exp.company && exp.company.toLowerCase().includes(query)) ||
         (exp.technologies && exp.technologies.some(tech => tech.name.toLowerCase().includes(query)))
+      );
+    }
+
+    if (selectedTechnologies.length > 0) {
+      filteredData = filteredData.filter(exp =>
+        exp.technologies.some(tech => selectedTechnologies.includes(tech.name))
       );
     }
 

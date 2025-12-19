@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { TechIcon } from '../TechIcon/TechIcon';
 
 interface HomeProps {
     onSearch: (query: string) => void;
+    onTechSelect: (tech: string) => void;
 }
 
-export const Home = ({ onSearch }: HomeProps) => {
+export const Home = ({ onSearch, onTechSelect }: HomeProps) => {
     const [query, setQuery] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -58,10 +60,11 @@ export const Home = ({ onSearch }: HomeProps) => {
                     {['React', 'TypeScript', 'Node.js', 'Frontend', 'Backend'].map((tag) => (
                         <button
                             key={tag}
-                            onClick={() => onSearch(tag)}
-                            className="px-4 py-2 bg-white rounded-full shadow-sm border border-gray-100 hover:border-bee-yellow hover:text-bee-yellow transition-colors cursor-pointer"
+                            onClick={() => onTechSelect(tag)}
+                            className="px-4 py-2 bg-white rounded-full shadow-sm border border-gray-100 hover:border-bee-yellow hover:text-bee-yellow transition-colors cursor-pointer flex items-center gap-2 group"
                         >
-                            {tag}
+                            <TechIcon name={tag} className="w-4 h-4 text-gray-400 group-hover:text-bee-yellow transition-colors" showTooltip={false} />
+                            <span>{tag}</span>
                         </button>
                     ))}
                 </div>

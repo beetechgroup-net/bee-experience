@@ -11,7 +11,7 @@ export interface PaginatedResponse {
 export interface IProjectService {
   getAllProjects(): Promise<Project[]>;
   getProjectById(id: string): Promise<Project | null>;
-  getProjectsPaginated(page: number, pageSize: number, searchQuery?: string): Promise<PaginatedResponse>;
+  getProjectsPaginated(page: number, pageSize: number, searchQuery?: string, selectedTechnologies?: string[]): Promise<PaginatedResponse>;
 }
 
 export class ProjectService implements IProjectService {
@@ -37,17 +37,23 @@ export class ProjectService implements IProjectService {
     return Promise.resolve(project || null);
   }
 
-  async getProjectsPaginated(page: number, pageSize: number, searchQuery?: string): Promise<PaginatedResponse> {
+  async getProjectsPaginated(page: number, pageSize: number, searchQuery?: string, selectedTechnologies: string[] = []): Promise<PaginatedResponse> {
     await this.simulateDelay();
 
     let filteredData = this.projects;
 
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      filteredData = this.projects.filter(proj =>
+      filteredData = filteredData.filter(proj =>
         (proj.title && proj.title.toLowerCase().includes(query)) ||
         (proj.description && proj.description.toLowerCase().includes(query)) ||
         (proj.technologies && proj.technologies.some(tech => tech.name.toLowerCase().includes(query)))
+      );
+    }
+
+    if (selectedTechnologies.length > 0) {
+      filteredData = filteredData.filter(proj =>
+        proj.technologies.some(tech => selectedTechnologies.includes(tech.name))
       );
     }
 
