@@ -13,9 +13,15 @@ export const projectsData: Project[] = [
       { name: 'Vite', category: 'devops' }
     ],
     projectUrl: 'https://beetechgroup-net.github.io/bee-experience/',
-    status: 'users',
+    status: 'in-progress',
     year: '2025',
-    category: 'Portfolio'
+    category: 'Portfolio',
+    techniques: [
+      'Component-Based Architecture',
+      'Custom Hooks',
+      'Responsive Design',
+      'Dark Mode Support'
+    ]
   },
   {
     id: '2',
@@ -31,7 +37,13 @@ export const projectsData: Project[] = [
     ],
     status: 'completed',
     year: '2023',
-    category: 'IoT'
+    category: 'IoT',
+    techniques: [
+      'Encryption (Blowfish/HMAC)',
+      'Byte-level Operations',
+      'Audit Logging',
+      'Hardware Communication'
+    ]
   },
   {
     id: '3',
@@ -47,6 +59,12 @@ export const projectsData: Project[] = [
     ],
     status: 'completed',
     year: '2023',
-    category: 'Environment'
+    category: 'Environment',
+    techniques: [
+      'Microservices',
+      'AI Integration',
+      'Data Ingestion',
+      'Parallel Processing'
+    ]
   }
 ];

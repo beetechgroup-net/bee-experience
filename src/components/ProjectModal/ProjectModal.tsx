@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon, LinkIcon, CodeBracketIcon } from '@heroicons/react/24/outline';
+import { TechIcon } from '@/components/TechIcon/TechIcon';
 import type { Project } from '@/types/project.types';
 
 interface ProjectModalProps {
@@ -9,17 +10,7 @@ interface ProjectModalProps {
   onClose: () => void;
 }
 
-const getCategoryColor = (category: string) => {
-  const colors: Record<string, string> = {
-    frontend: 'bg-blue-50 text-blue-700 border-blue-200',
-    backend: 'bg-green-50 text-green-700 border-green-200',
-    database: 'bg-purple-50 text-purple-700 border-purple-200',
-    devops: 'bg-orange-50 text-orange-700 border-orange-200',
-    mobile: 'bg-pink-50 text-pink-700 border-pink-200',
-    other: 'bg-gray-50 text-gray-700 border-gray-200',
-  };
-  return colors[category] || colors.other;
-};
+
 
 const getStatusColor = (status: string) => {
   const colors: Record<string, string> = {
@@ -168,8 +159,9 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
                           {techs.map((tech, index) => (
                             <span
                               key={index}
-                              className={`px-4 py-2 rounded-xl text-sm font-medium border ${getCategoryColor(tech.category)} shadow-sm hover:shadow-md transition-shadow`}
+                              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium bg-bee-yellow/10 text-bee-yellow"
                             >
+                              <TechIcon name={tech.name} className="w-4 h-4" />
                               {tech.name}
                             </span>
                           ))}

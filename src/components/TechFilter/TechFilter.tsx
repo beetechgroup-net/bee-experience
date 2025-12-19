@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
-import { CheckIcon, ChevronUpDownIcon, XMarkIcon } from '@heroicons/react/20/solid';
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { TechIcon } from '../TechIcon/TechIcon';
 import { getAllTechnologies } from '@/utils/tech.utils';
 
