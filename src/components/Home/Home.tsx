@@ -51,12 +51,12 @@ const ExpertiseSection = ({ expertise, index, onTechSelect }: { expertise: Exper
 
     return (
         <section
-            className="min-h-screen flex items-center justify-center relative py-20 overflow-hidden"
+            className="min-h-screen flex items-center justify-center relative py-12 md:py-20 overflow-hidden"
         >
             <div className={`absolute inset-0 bg-gradient-to-br ${expertise.color} opacity-5`}></div>
 
             <div
-                className={`container mx-auto px-4 flex flex-col md:flex-row items-center gap-12 ${isEven ? '' : 'md:flex-row-reverse'}`}
+                className={`container mx-auto px-4 flex flex-col md:flex-row items-center gap-8 md:gap-12 ${isEven ? '' : 'md:flex-row-reverse'}`}
             >
 
                 {/* Text Content */}
@@ -68,19 +68,19 @@ const ExpertiseSection = ({ expertise, index, onTechSelect }: { expertise: Exper
                     </div>
 
                     <h2
-                        className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight"
+                        className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight"
                     >
                         {expertise.title}
                     </h2>
 
                     <p
-                        className="text-xl md:text-2xl text-gray-500 font-light"
+                        className="text-lg md:text-2xl text-gray-500 font-light"
                     >
                         {expertise.description}
                     </p>
 
                     <div
-                        className="prose prose-lg text-gray-600 border-l-4 border-gray-200 pl-6 italic"
+                        className="prose prose-base md:prose-lg text-gray-600 border-l-4 border-gray-200 pl-6 italic"
                     >
                         "{expertise.experience}"
                     </div>
@@ -107,7 +107,7 @@ const ExpertiseSection = ({ expertise, index, onTechSelect }: { expertise: Exper
                 {/* Visual/Decorative */}
                 <div className="flex-1 flex justify-center">
                     <div
-                        className={`relative w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-br ${expertise.color} opacity-10 blur-3xl`}
+                        className={`relative w-48 h-48 md:w-80 md:h-80 rounded-full bg-gradient-to-br ${expertise.color} opacity-10 blur-3xl`}
                         style={{ transform: `scale(1)` }}
                     ></div>
                     <div className="absolute">
@@ -169,7 +169,7 @@ export const Home = ({ onSearch, onTechSelect }: HomeProps) => {
                             />
                         </div>
 
-                        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
+                        <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-2">
                             Gabriel Menezes
                         </h1>
                         <p className="text-xl md:text-2xl text-bee-yellow font-medium mb-4">
@@ -196,11 +196,11 @@ export const Home = ({ onSearch, onTechSelect }: HomeProps) => {
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
                                 placeholder="Explore meus projetos e experiências..."
-                                className="w-full px-6 py-5 text-lg text-gray-800 placeholder-gray-400 bg-transparent border-none focus:ring-0 focus:outline-none"
+                                className="w-full px-4 py-3 md:px-6 md:py-5 text-base md:text-lg text-gray-800 placeholder-gray-400 bg-transparent border-none focus:ring-0 focus:outline-none"
                             />
                             <button
                                 type="submit"
-                                className="px-8 py-5 bg-gradient-to-r from-bee-yellow to-yellow-400 text-bee-black font-semibold text-lg hover:shadow-md transition-all duration-300"
+                                className="px-6 py-3 md:px-8 md:py-5 bg-gradient-to-r from-bee-yellow to-yellow-400 text-bee-black font-semibold text-base md:text-lg hover:shadow-md transition-all duration-300"
                             >
                                 Buscar
                             </button>
