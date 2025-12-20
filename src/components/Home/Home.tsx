@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { TechIcon } from '../TechIcon/TechIcon';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
@@ -46,41 +46,18 @@ const expertises: Expertise[] = [
     }
 ];
 
-const useOnScreen = (options: IntersectionObserverInit) => {
-    const ref = useRef<HTMLDivElement>(null);
-    const [isVisible, setIsVisible] = useState(false);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(([entry]) => {
-            setIsVisible(entry.isIntersecting);
-        }, options);
-
-        if (ref.current) {
-            observer.observe(ref.current);
-        }
-
-        return () => {
-            if (ref.current) {
-                observer.unobserve(ref.current);
-            }
-        };
-    }, [ref, options]);
-
-    return [ref, isVisible] as const;
-};
-
-const ExpertiseSection = ({ expertise, index }: { expertise: Expertise, index: number }) => {
-    const [ref, isVisible] = useOnScreen({ threshold: 0.3 });
+const ExpertiseSection = ({ expertise, index, onTechSelect }: { expertise: Expertise, index: number, onTechSelect: (tech: string) => void }) => {
     const isEven = index % 2 === 0;
 
     return (
         <section
-            ref={ref}
             className="min-h-screen flex items-center justify-center relative py-20 overflow-hidden"
         >
             <div className={`absolute inset-0 bg-gradient-to-br ${expertise.color} opacity-5`}></div>
 
-            <div className={`container mx-auto px-4 flex flex-col md:flex-row items-center gap-12 transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'} ${isEven ? '' : 'md:flex-row-reverse'}`}>
+            <div
+                className={`container mx-auto px-4 flex flex-col md:flex-row items-center gap-12 ${isEven ? '' : 'md:flex-row-reverse'}`}
+            >
 
                 {/* Text Content */}
                 <div className="flex-1 space-y-6">
@@ -90,37 +67,53 @@ const ExpertiseSection = ({ expertise, index }: { expertise: Expertise, index: n
                         </span>
                     </div>
 
-                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+                    <h2
+                        className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight"
+                    >
                         {expertise.title}
                     </h2>
 
-                    <p className="text-xl md:text-2xl text-gray-500 font-light">
+                    <p
+                        className="text-xl md:text-2xl text-gray-500 font-light"
+                    >
                         {expertise.description}
                     </p>
 
-                    <div className="prose prose-lg text-gray-600 border-l-4 border-gray-200 pl-6 italic">
+                    <div
+                        className="prose prose-lg text-gray-600 border-l-4 border-gray-200 pl-6 italic"
+                    >
                         "{expertise.experience}"
                     </div>
 
-                    <div className="pt-6">
+                    <div
+                        className="pt-6"
+                    >
                         <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-4">Tecnologias</h4>
                         <div className="flex flex-wrap gap-2">
                             {expertise.techs.map((tech) => (
-                                <span key={tech} className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-sm border border-gray-100 text-sm font-medium text-gray-700">
+                                <button
+                                    key={tech}
+                                    onClick={() => onTechSelect(tech)}
+                                    className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-sm border border-gray-100 text-sm font-medium text-gray-700 hover:border-bee-yellow hover:text-bee-yellow hover:scale-105 transition-all duration-300"
+                                >
                                     <TechIcon name={tech} className="w-5 h-5" showTooltip={false} />
                                     {tech}
-                                </span>
+                                </button>
                             ))}
                         </div>
                     </div>
                 </div>
 
-                {/* Visual/Decorative (Can be an icon or abstract shape) */}
+                {/* Visual/Decorative */}
                 <div className="flex-1 flex justify-center">
-                    <div className={`relative w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-br ${expertise.color} opacity-10 blur-3xl animate-pulse`}></div>
+                    <div
+                        className={`relative w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-br ${expertise.color} opacity-10 blur-3xl`}
+                        style={{ transform: `scale(1)` }}
+                    ></div>
                     <div className="absolute">
-                        {/* Could put a massive icon here if we wanted, or just keep it abstract */}
-                        <div className={`text-9xl text-gray-200 opacity-20 font-black`}>
+                        <div
+                            className={`text-9xl text-gray-200 opacity-20 font-black`}
+                        >
                             {index + 1}
                         </div>
                     </div>
@@ -133,16 +126,6 @@ const ExpertiseSection = ({ expertise, index }: { expertise: Expertise, index: n
 
 export const Home = ({ onSearch, onTechSelect }: HomeProps) => {
     const [query, setQuery] = useState('');
-    const [scrollY, setScrollY] = useState(0);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrollY(window.scrollY);
-        };
-
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -162,12 +145,12 @@ export const Home = ({ onSearch, onTechSelect }: HomeProps) => {
             <div className="min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden">
                 {/* Parallax Background Elements */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
-                    <div className="absolute top-[10%] left-[5%] opacity-20" style={{ transform: `translateY(${scrollY * 0.2}px) rotate(15deg)` }}>
+                    <div className="absolute top-[10%] left-[5%] opacity-20" style={{ transform: `rotate(15deg)` }}>
                         <svg width="200" height="200" viewBox="0 0 200 200" className="text-bee-yellow fill-current">
                             <path d="M100 0 L186.6 50 L186.6 150 L100 200 L13.4 150 L13.4 50 Z" />
                         </svg>
                     </div>
-                    <div className="absolute bottom-[20%] right-[10%] opacity-10" style={{ transform: `translateY(${-scrollY * 0.1}px) rotate(-10deg)` }}>
+                    <div className="absolute bottom-[20%] right-[10%] opacity-10" style={{ transform: `rotate(-10deg)` }}>
                         <svg width="300" height="300" viewBox="0 0 200 200" className="text-gray-900 fill-current">
                             <path d="M100 0 L186.6 50 L186.6 150 L100 200 L13.4 150 L13.4 50 Z" />
                         </svg>
@@ -236,7 +219,12 @@ export const Home = ({ onSearch, onTechSelect }: HomeProps) => {
             {/* Scroll-telling Sections */}
             <div className="w-full bg-white">
                 {expertises.map((expertise, index) => (
-                    <ExpertiseSection key={index} expertise={expertise} index={index} />
+                    <ExpertiseSection
+                        key={index}
+                        expertise={expertise}
+                        index={index}
+                        onTechSelect={onTechSelect}
+                    />
                 ))}
             </div>
 
