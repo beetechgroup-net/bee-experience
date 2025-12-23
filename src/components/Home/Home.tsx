@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 import { TechIcon } from '../TechIcon/TechIcon';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
@@ -7,53 +8,44 @@ interface HomeProps {
     onTechSelect: (tech: string) => void;
 }
 
-interface Expertise {
-    title: string;
-    description: string;
-    experience: string;
+interface ExpertiseConfig {
+    id: string;
     techs: string[];
     color: string;
 }
 
-const expertises: Expertise[] = [
+const expertisesConfig: ExpertiseConfig[] = [
     {
-        title: "Frontend Engineering",
-        description: "Construindo interfaces imersivas e performáticas.",
-        experience: "Especialista em criar SPAs complexas e dashboards interativos. Com React e Next.js, desenvolvi interfaces utilizadas por mais de 300 mil usuários, focando sempre em performance, acessibilidade e uma experiência de usuário fluida (UX).",
+        id: "frontend",
         techs: ["React", "TypeScript", "Next.js", "Tailwind CSS"],
         color: "from-blue-400 to-blue-600"
     },
     {
-        title: "Backend & Microservices",
-        description: "Arquiteturas escaláveis e seguras.",
-        experience: "Experiência robusta no desenho de sistemas distribuídos. Projetei arquiteturas de microsserviços usando Pattern Service-per-Action com Java/Quarkus e Node.js, garantindo alta disponibilidade e facilidade de manutenção para grandes volumes de dados.",
+        id: "backend",
         techs: ["Node.js", "Java", "Quarkus", "PostgreSQL"],
         color: "from-green-400 to-green-600"
     },
     {
-        title: "Cloud & DevOps",
-        description: "Infraestrutura confiável e automação.",
-        experience: "Gerenciamento completo do ciclo de vida da aplicação. Desde a containerização com Docker até a configuração de proxies reversos com Nginx e pipelines de CI/CD, garantindo entregas contínuas e ambientes de produção estáveis.",
+        id: "cloud",
         techs: ["Docker", "Nginx", "CI/CD", "Linux"],
         color: "from-orange-400 to-orange-600"
     },
     {
-        title: "IoT & Integração",
-        description: "Conectando o mundo físico ao digital.",
-        experience: "Desenvolvimento de protocolos de comunicação segura para hardware industrial. Implementei criptografia (HMAC/Blowfish) e operações em nível de byte para garantir integridade e segurança na comunicação com dispositivos em campo.",
+        id: "iot",
         techs: ["IoT", "Security", "Encryption", "Architecture"],
         color: "from-purple-400 to-purple-600"
     }
 ];
 
-const ExpertiseSection = ({ expertise, index, onTechSelect }: { expertise: Expertise, index: number, onTechSelect: (tech: string) => void }) => {
+const ExpertiseSection = ({ config, index, onTechSelect }: { config: ExpertiseConfig, index: number, onTechSelect: (tech: string) => void }) => {
+    const { t } = useTranslation();
     const isEven = index % 2 === 0;
 
     return (
         <section
             className="min-h-screen flex items-center justify-center relative py-12 md:py-20 overflow-hidden"
         >
-            <div className={`absolute inset-0 bg-gradient-to-br ${expertise.color} opacity-5`}></div>
+            <div className={`absolute inset-0 bg-gradient-to-br ${config.color} opacity-5`}></div>
 
             <div
                 className={`container mx-auto px-4 flex flex-col md:flex-row items-center gap-8 md:gap-12 ${isEven ? '' : 'md:flex-row-reverse'}`}
@@ -62,7 +54,7 @@ const ExpertiseSection = ({ expertise, index, onTechSelect }: { expertise: Exper
                 {/* Text Content */}
                 <div className="flex-1 space-y-6">
                     <div className="flex items-center gap-3">
-                        <span className={`px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r ${expertise.color} uppercase tracking-wider`}>
+                        <span className={`px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r ${config.color} uppercase tracking-wider`}>
                             Expertise #{index + 1}
                         </span>
                     </div>
@@ -70,27 +62,27 @@ const ExpertiseSection = ({ expertise, index, onTechSelect }: { expertise: Exper
                     <h2
                         className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight"
                     >
-                        {expertise.title}
+                        {t(`home.expertises.${config.id}.title`)}
                     </h2>
 
                     <p
                         className="text-lg md:text-2xl text-gray-500 font-light"
                     >
-                        {expertise.description}
+                        {t(`home.expertises.${config.id}.description`)}
                     </p>
 
                     <div
                         className="prose prose-base md:prose-lg text-gray-600 border-l-4 border-gray-200 pl-6 italic"
                     >
-                        "{expertise.experience}"
+                        "{t(`home.expertises.${config.id}.experience`)}"
                     </div>
 
                     <div
                         className="pt-6"
                     >
-                        <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-4">Tecnologias</h4>
+                        <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-4">{t('home.technologies')}</h4>
                         <div className="flex flex-wrap gap-2">
-                            {expertise.techs.map((tech) => (
+                            {config.techs.map((tech) => (
                                 <button
                                     key={tech}
                                     onClick={() => onTechSelect(tech)}
@@ -107,7 +99,7 @@ const ExpertiseSection = ({ expertise, index, onTechSelect }: { expertise: Exper
                 {/* Visual/Decorative */}
                 <div className="flex-1 flex justify-center">
                     <div
-                        className={`relative w-48 h-48 md:w-80 md:h-80 rounded-full bg-gradient-to-br ${expertise.color} opacity-10 blur-3xl`}
+                        className={`relative w-48 h-48 md:w-80 md:h-80 rounded-full bg-gradient-to-br ${config.color} opacity-10 blur-3xl`}
                         style={{ transform: `scale(1)` }}
                     ></div>
                     <div className="absolute">
@@ -125,6 +117,7 @@ const ExpertiseSection = ({ expertise, index, onTechSelect }: { expertise: Exper
 };
 
 export const Home = ({ onSearch, onTechSelect }: HomeProps) => {
+    const { t } = useTranslation();
     const [query, setQuery] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -170,15 +163,21 @@ export const Home = ({ onSearch, onTechSelect }: HomeProps) => {
                         </div>
 
                         <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-2">
-                            Gabriel Menezes
+                            {t('home.name')}
                         </h1>
                         <p className="text-xl md:text-2xl text-bee-yellow font-medium mb-4">
-                            Software Engineer
+                            {t('home.role')}
                         </p>
 
                         <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed mb-10">
-                            Desenvolvedor Full Stack apaixonado por criar soluções inovadoras.
-                            Especialista em construções escaláveis com <span className="font-semibold text-gray-800">React</span>, <span className="font-semibold text-gray-800">Node.js</span> e <span className="font-semibold text-gray-800">Cloud Computing</span>.
+                            <Trans
+                                i18nKey="home.bio"
+                                components={[
+                                    <span className="font-semibold text-gray-800" key="0" />,
+                                    <span className="font-semibold text-gray-800" key="1" />,
+                                    <span className="font-semibold text-gray-800" key="2" />
+                                ]}
+                            />
                         </p>
                     </div>
 
@@ -195,14 +194,14 @@ export const Home = ({ onSearch, onTechSelect }: HomeProps) => {
                                 type="text"
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
-                                placeholder="Explore meus projetos e experiências..."
+                                placeholder={t('home.search.placeholder')}
                                 className="w-full px-4 py-3 md:px-6 md:py-5 text-base md:text-lg text-gray-800 placeholder-gray-400 bg-transparent border-none focus:ring-0 focus:outline-none"
                             />
                             <button
                                 type="submit"
                                 className="px-6 py-3 md:px-8 md:py-5 bg-gradient-to-r from-bee-yellow to-yellow-400 text-bee-black font-semibold text-base md:text-lg hover:shadow-md transition-all duration-300"
                             >
-                                Buscar
+                                {t('home.search.button')}
                             </button>
                         </div>
                     </form>
@@ -218,10 +217,10 @@ export const Home = ({ onSearch, onTechSelect }: HomeProps) => {
 
             {/* Scroll-telling Sections */}
             <div className="w-full bg-white">
-                {expertises.map((expertise, index) => (
+                {expertisesConfig.map((config, index) => (
                     <ExpertiseSection
                         key={index}
-                        expertise={expertise}
+                        config={config}
                         index={index}
                         onTechSelect={onTechSelect}
                     />
@@ -230,7 +229,7 @@ export const Home = ({ onSearch, onTechSelect }: HomeProps) => {
 
             {/* Final CTA / Tags */}
             <div className="min-h-[50vh] flex flex-col items-center justify-center p-8 bg-gray-50 text-center">
-                <h3 className="text-3xl font-bold text-gray-900 mb-8">Conheça o Stack Completo</h3>
+                <h3 className="text-3xl font-bold text-gray-900 mb-8">{t('home.stack')}</h3>
                 <div className="flex flex-wrap justify-center gap-3 max-w-3xl">
                     {['React', 'TypeScript', 'Node.js', 'Java', 'Quarkus', 'Docker', 'Kubernetes', 'AWS', 'IoT', 'Security'].map((tag) => (
                         <button

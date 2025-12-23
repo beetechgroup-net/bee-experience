@@ -1,0 +1,41 @@
+{
+    "header": {
+        "title": "Bee Experience",
+        "subtitle": "Development Portfolio",
+        "home": "Home",
+        "explore": "Explore All"
+    },
+    "home": {
+        "name": "Gabriel Menezes",
+        "role": "Software Engineer",
+        "bio": "Full Stack Developer passionate about creating innovative solutions.\nSpecialist in building scalable applications with <0>React</0>, <1>Node.js</1> and <2>Cloud Computing</2>.",
+        "search": {
+            "placeholder": "Explore my projects and experiences...",
+            "button": "Search"
+        },
+        "stack": "Meet the Full Stack",
+        "technologies": "Technologies",
+        "expertises": {
+            "frontend": {
+                "title": "Frontend Engineering",
+                "description": "Building immersive and performant interfaces.",
+                "experience": "Specialist in creating complex SPAs and interactive dashboards. With React and Next.js, I developed interfaces used by over 300k users, always focusing on performance, accessibility and fluid user experience (UX)."
+            },
+            "backend": {
+                "title": "Backend & Microservices",
+                "description": "Scalable and secure architectures.",
+                "experience": "Robust experience in designing distributed systems. Designed microservices architectures using Pattern Service-per-Action with Java/Quarkus and Node.js, ensuring high availability and maintainability for large data volumes."
+            },
+            "cloud": {
+                "title": "Cloud & DevOps",
+                "description": "Reliable infrastructure and automation.",
+                "experience": "Complete application lifecycle management. From containerization with Docker to reverse proxy configuration with Nginx and CI/CD pipelines, ensuring continuous delivery and stable production environments."
+            },
+            "iot": {
+                "title": "IoT & Integration",
+                "description": "Connecting the physical world to the digital.",
+                "experience": "Development of secure communication protocols for industrial hardware. Implemented encryption (HMAC/Blowfish) and byte-level operations to ensure data integrity and security in field device communication."
+            }
+        }
+    }
+}

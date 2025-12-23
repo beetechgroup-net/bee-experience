@@ -1,0 +1,41 @@
+{
+    "header": {
+        "title": "Bee Experience",
+        "subtitle": "Portfólio de Desenvolvimento",
+        "home": "Home",
+        "explore": "Explorar Todos"
+    },
+    "home": {
+        "name": "Gabriel Menezes",
+        "role": "Software Engineer",
+        "bio": "Desenvolvedor Full Stack apaixonado por criar soluções inovadoras.\nEspecialista em construções escaláveis com <0>React</0>, <1>Node.js</1> e <2>Cloud Computing</2>.",
+        "search": {
+            "placeholder": "Explore meus projetos e experiências...",
+            "button": "Buscar"
+        },
+        "stack": "Conheça o Stack Completo",
+        "technologies": "Tecnologias",
+        "expertises": {
+            "frontend": {
+                "title": "Frontend Engineering",
+                "description": "Construindo interfaces imersivas e performáticas.",
+                "experience": "Especialista em criar SPAs complexas e dashboards interativos. Com React e Next.js, desenvolvi interfaces utilizadas por mais de 300 mil usuários, focando sempre em performance, acessibilidade e uma experiência de usuário fluida (UX)."
+            },
+            "backend": {
+                "title": "Backend & Microservices",
+                "description": "Arquiteturas escaláveis e seguras.",
+                "experience": "Experiência robusta no desenho de sistemas distribuídos. Projetei arquiteturas de microsserviços usando Pattern Service-per-Action com Java/Quarkus e Node.js, garantindo alta disponibilidade e facilidade de manutenção para grandes volumes de dados."
+            },
+            "cloud": {
+                "title": "Cloud & DevOps",
+                "description": "Infraestrutura confiável e automação.",
+                "experience": "Gerenciamento completo do ciclo de vida da aplicação. Desde a containerização com Docker até a configuração de proxies reversos com Nginx e pipelines de CI/CD, garantindo entregas contínuas e ambientes de produção estáveis."
+            },
+            "iot": {
+                "title": "IoT & Integração",
+                "description": "Conectando o mundo físico ao digital.",
+                "experience": "Desenvolvimento de protocolos de comunicação segura para hardware industrial. Implementei criptografia (HMAC/Blowfish) e operações em nível de byte para garantir integridade e segurança na comunicação com dispositivos em campo."
+            }
+        }
+    }
+}
